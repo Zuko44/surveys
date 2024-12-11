@@ -22,10 +22,10 @@ async function handleDateSubmit({ from, to }: { from: string; to: string }) {
       throw new Error('Ошибка при получении данных с сервера.')
     }
 
-    // Явно типизируем данные
+    // Явно типизируем данные, нужно для err instanceof Error
     const data: ApiResponse = await response.json()
 
-    // Если данные не массив, обернуть в массив (либо API всегда возвращает массив)
+    // Если данные не массив, обернуть в массив (хотя возможно API всегда возвращает массив)
     const result = Array.isArray(data) ? data : [data]
 
     // Фильтрация по статусу, если требуется (по заданию API возвращает "finished", но на всякий случай)
@@ -49,7 +49,7 @@ async function handleDateSubmit({ from, to }: { from: string; to: string }) {
     <!-- Компонент формы дат -->
     <DateFilterForm @submit="handleDateSubmit" />
 
-    <!-- Компонент статуса или ошибок -->
+    <!-- Компонент статуса/ошибок -->
     <StatusMessage v-if="error.message" :message="error.message" type="error" />
     <StatusMessage v-else-if="loading" message="Загрузка..." type="info" />
 
